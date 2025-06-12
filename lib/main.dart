@@ -1,3 +1,5 @@
+import 'package:costo_viaggio_auto/pagine/pedaggi_screen.dart';
+import 'package:costo_viaggio_auto/pagine/viaggi_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'database/database.dart';
@@ -22,6 +24,16 @@ final GoRouter _router = GoRouter(
           path: '/macchine',
           pageBuilder: (context, state) =>
               NoTransitionPage(child: MacchineScreen(db: db)),
+        ),
+        GoRoute(
+          path: '/pedaggi',
+          pageBuilder: (context, state) =>
+              NoTransitionPage(child: PedaggiScreen(db: db)),
+        ),
+        GoRoute(
+          path: '/viaggi',
+          pageBuilder: (context, state) =>
+              NoTransitionPage(child: ViaggiScreen(db: db)),
         ),
       ],
     ),

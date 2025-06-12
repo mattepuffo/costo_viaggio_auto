@@ -6,7 +6,7 @@ class MainTabScaffold extends StatelessWidget {
 
   const MainTabScaffold({required this.child, super.key});
 
-  static final tabs = ['/home', '/macchine', '/tratte'];
+  static final tabs = ['/home', '/macchine', '/pedaggi', '/viaggi'];
 
   int _locationToTabIndex(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
@@ -20,6 +20,7 @@ class MainTabScaffold extends StatelessWidget {
     return Scaffold(
       body: child,
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex < 0 ? 0 : currentIndex,
         onTap: (index) {
           if (index != currentIndex) {
@@ -32,7 +33,8 @@ class MainTabScaffold extends StatelessWidget {
             icon: Icon(Icons.directions_car),
             label: 'Auto',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.add_road), label: 'Tratte'),
+          BottomNavigationBarItem(icon: Icon(Icons.alt_route), label: 'Pedaggi'),
+          BottomNavigationBarItem(icon: Icon(Icons.add_road), label: 'Viaggi'),
         ],
       ),
     );
