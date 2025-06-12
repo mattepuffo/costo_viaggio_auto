@@ -30,7 +30,7 @@ final GoRouter _router = GoRouter(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await addFakeData(db);
+  // await addFakeData(db);
   runApp(const MyApp());
 }
 
