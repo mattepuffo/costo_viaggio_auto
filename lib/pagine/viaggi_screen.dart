@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart' show OrderingTerm, OrderingMode;
 import 'package:flutter/material.dart';
 import '../database/database.dart';
+import '../widgets/app_drawer.dart';
 
 class ViaggiScreen extends StatefulWidget {
   final AppDatabase db;
@@ -51,6 +52,7 @@ class _ViaggiScreenState extends State<ViaggiScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Storico viaggi'),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../database/database.dart';
+import '../widgets/app_drawer.dart';
 import 'macchina_form_screen.dart';
 
 class MacchineScreen extends StatelessWidget {
@@ -41,6 +42,7 @@ class MacchineScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Lista macchine'),

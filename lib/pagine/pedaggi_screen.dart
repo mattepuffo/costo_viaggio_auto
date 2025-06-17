@@ -1,6 +1,7 @@
 import 'package:costo_viaggio_auto/pagine/pedaggio_form_screen.dart';
 import 'package:flutter/material.dart';
 import '../database/database.dart';
+import '../widgets/app_drawer.dart';
 
 class PedaggiScreen extends StatelessWidget {
   final AppDatabase db;
@@ -43,6 +44,7 @@ class PedaggiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Lista pedaggi'),

@@ -91,8 +91,9 @@ class _PedaggioFormScreenState extends State<PedaggioFormScreen> {
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
                   final v = value?.replaceAll(',', '.');
-                  if (v == null || v.trim().isEmpty)
+                  if (v == null || v.trim().isEmpty) {
                     return 'Inserisci il costo';
+                  }
                   final c = double.tryParse(v);
                   if (c == null || c < 0) return 'Costo non valido';
                   return null;

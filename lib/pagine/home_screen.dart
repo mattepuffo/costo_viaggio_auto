@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../database/database.dart';
+import '../widgets/app_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   final AppDatabase db;
@@ -18,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _formKey = GlobalKey<FormState>();
   double? _costoTotale;
   bool _puoSalvare = false;
+  bool _andataRitorno = false; // <-- aggiunto
 
   @override
   void dispose() {
@@ -35,7 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     final km = double.parse(_kmController.text.replaceAll(',', '.'));
     final consumo = macchina.consumo;
-    final costoPedaggio = pedaggio.costo;
+    double costoPedaggio = pedaggio.costo;
+
+    if (_andataRitorno) {
+      costoPedaggio *= 2;
+    }
 
     final costo = (km / consumo) * prezzoBenzina + costoPedaggio;
     setState(() {
@@ -47,8 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _salvaViaggio() async {
     if (_selectedMacchina == null ||
         _selectedPedaggio == null ||
-        _costoTotale == null)
+        _costoTotale == null) {
       return;
+    }
 
     final nomeMacchina = _selectedMacchina!.nome;
     final nomeTratta = _selectedPedaggio!.tratta;
@@ -61,14 +68,14 @@ class _HomeScreenState extends State<HomeScreen> {
     await widget.db
         .into(widget.db.viaggi)
         .insert(
-          ViaggiCompanion.insert(
-            macchina: nomeMacchina,
-            tratta: nomeTratta,
-            costoBenzina: costoBenzina,
-            costoViaggio: costoViaggio,
-            data: dataOra,
-          ),
-        );
+      ViaggiCompanion.insert(
+        macchina: nomeMacchina,
+        tratta: nomeTratta,
+        costoBenzina: costoBenzina,
+        costoViaggio: costoViaggio,
+        data: dataOra,
+      ),
+    );
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -81,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _kmController.clear();
         _costoTotale = null;
         _puoSalvare = false;
+        _andataRitorno = false;
       });
       _formKey.currentState?.reset();
     }
@@ -89,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('Calcolo costo viaggio'),
@@ -154,8 +163,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
                   final v = value?.replaceAll(',', '.');
-                  if (v == null || v.trim().isEmpty)
+                  if (v == null || v.trim().isEmpty) {
                     return 'Inserisci il prezzo';
+                  }
                   final p = double.tryParse(v);
                   if (p == null || p <= 0) return 'Prezzo non valido';
                   return null;
@@ -171,12 +181,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
                   final v = value?.replaceAll(',', '.');
-                  if (v == null || v.trim().isEmpty)
+                  if (v == null || v.trim().isEmpty) {
                     return 'Inserisci i km percorsi';
+                  }
                   final km = double.tryParse(v);
                   if (km == null || km <= 0) return 'Km non valido';
                   return null;
                 },
+              ),
+              const SizedBox(height: 16),
+              CheckboxListTile(
+                title: const Text('Andata e ritorno?'),
+                value: _andataRitorno,
+                onChanged: (val) {
+                  setState(() {
+                    _andataRitorno = val ?? false;
+                  });
+                },
+                controlAffinity: ListTileControlAffinity.leading,
               ),
               const SizedBox(height: 24),
               Row(

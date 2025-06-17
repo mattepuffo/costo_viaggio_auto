@@ -91,8 +91,9 @@ class _MacchinaFormScreenState extends State<MacchinaFormScreen> {
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
                   final v = value?.replaceAll(',', '.');
-                  if (v == null || v.trim().isEmpty)
+                  if (v == null || v.trim().isEmpty) {
                     return 'Inserisci il consumo';
+                  }
                   final c = double.tryParse(v);
                   if (c == null || c <= 0) return 'Consumo non valido';
                   return null;
